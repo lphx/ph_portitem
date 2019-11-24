@@ -61,7 +61,7 @@ public class FreemarkerTemplateEngine {
             while ((index = oupFile.indexOf("_"))>0){
                 lastIndex= oupFile.indexOf("_",index+1);
                 oupFile = oupFile.substring(index+1,lastIndex);
-                System.out.println("letter =    1 " + oupFile);
+                System.out.println("letter =    " + oupFile);
             }
 
 

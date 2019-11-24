@@ -7,6 +7,7 @@ import freemarker.template.Template;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -32,14 +33,42 @@ public class FreemarkerTemplateEngine {
         logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
     }
 
-    public static void main(String[] args) throws Exception {
-        FreemarkerTemplateEngine freemarkerTemplateEngine = new FreemarkerTemplateEngine();
-        freemarkerTemplateEngine.init();
-        Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("classPath", "com.freemark.hello");
-        dataMap.put("className", "AutoCodeDemo");
-        dataMap.put("helloWorld", "通过简单的 <代码自动生产程序> 演示 FreeMarker的HelloWorld！");
-        freemarkerTemplateEngine.write(dataMap,"controller.ftl","D:/test/AAA.java");
+
+    /**
+     * 创建文件夹
+     * @param path
+     */
+    public void existsFile(String path) {
+        File file = new File(path);
+        if (!file.exists()){
+            file.mkdirs();
+        }
+        logger.debug("创建出："+path);
     }
 
+    //判断,如t_user_name,去掉t改为UserName
+    public void humpName(String oupFile) {
+        int index = 0,lastIndex = 0;
+        int fileLength = oupFile.length();
+        index=oupFile.indexOf("_");
+            String  letter = oupFile.substring(0,index);
+            System.out.println("str = " + letter);
+            //如果_为t就去除
+            if (letter.equals("t")||letter.equals("T")){
+               // letter = oupFile.substring(index+1,1);
+               
+            }
+            while ((index = oupFile.indexOf("_"))>0){
+                lastIndex= oupFile.indexOf("_",index+1);
+                oupFile = oupFile.substring(index+1,lastIndex);
+                System.out.println("letter = " + oupFile);
+            }
+
+
+    }
+
+    public static void main(String[] args) {
+        FreemarkerTemplateEngine freemarkerTemplateEngine = new FreemarkerTemplateEngine();
+        freemarkerTemplateEngine.humpName("t_user_name");
+    }
 }

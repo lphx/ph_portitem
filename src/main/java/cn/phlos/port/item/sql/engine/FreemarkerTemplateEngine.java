@@ -50,37 +50,22 @@ public class FreemarkerTemplateEngine {
      * 判断,如t_user_name,去掉t改为UserName
      */
     public String humpName(String tableName) {
-        int position=0,secondPosition=0;
         String letter="";
-        int tableNameLength = tableName.replaceAll("_","").length();
-        while((position=tableName.indexOf("_",position))>0){
-            letter+=subtableName(tableName,secondPosition,position);
-            //如果_为t就去除
-            if (letter.equals("T")){
-                letter="";
-            }
-            position+=1;
-            secondPosition=position;
-        }
-        if (tableNameLength>letter.length()){
-            letter+=subtableName(tableName,secondPosition,tableName.length());
+        String aa[] = tableName.split("_");
+        for(int i=0;i<aa.length;i++){
+            if ((aa[0].equals("T") || aa[0].equals("t")) && i==0 )
+                continue;
+            letter+=aa[i].substring(0,1).toUpperCase()+aa[i].substring(1);
         }
         return letter;
 
     }
 
-    /**
-     *对字符串首字母进行变换大写
-     */
-    private String subtableName(String tableName,int secondPosition,int position ){
-        tableName =tableName.substring(secondPosition,position);
-        return tableName.substring(0,1).toUpperCase()+tableName.substring(1);
-    }
-
 
     public static void main(String[] args) {
         FreemarkerTemplateEngine freemarkerTemplateEngine = new FreemarkerTemplateEngine();
-        freemarkerTemplateEngine.humpName("t_user_name");
+        String aa = freemarkerTemplateEngine.humpName("t_t_user_name_aaa_ddd");
+        System.out.println(aa);
     }
 
 

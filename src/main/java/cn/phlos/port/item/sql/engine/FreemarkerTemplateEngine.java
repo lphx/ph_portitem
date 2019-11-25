@@ -46,29 +46,42 @@ public class FreemarkerTemplateEngine {
         logger.debug("创建出："+path);
     }
 
-    //判断,如t_user_name,去掉t改为UserName
-    public void humpName(String oupFile) {
-        int index = 0,lastIndex = 0;
-        int fileLength = oupFile.length();
-        index=oupFile.indexOf("_");
-            String  letter = oupFile.substring(0,index);
-            System.out.println("str = " + letter);
+    /**
+     * 判断,如t_user_name,去掉t改为UserName
+     */
+    public String humpName(String tableName) {
+        int position=0,secondPosition=0;
+        String letter="";
+        int tableNameLength = tableName.replaceAll("_","").length();
+        while((position=tableName.indexOf("_",position))>0){
+            letter+=subtableName(tableName,secondPosition,position);
             //如果_为t就去除
-            if (letter.equals("t")||letter.equals("T")){
-               // letter = oupFile.substring(index+1,1);
-               
+            if (letter.equals("T")){
+                letter="";
             }
-            while ((index = oupFile.indexOf("_"))>0){
-                lastIndex= oupFile.indexOf("_",index+1);
-                oupFile = oupFile.substring(index+1,lastIndex);
-                System.out.println("letter =    " + oupFile);
-            }
-
+            position+=1;
+            secondPosition=position;
+        }
+        if (tableNameLength>letter.length()){
+            letter+=subtableName(tableName,secondPosition,tableName.length());
+        }
+        return letter;
 
     }
+
+    /**
+     *对字符串首字母进行变换大写
+     */
+    private String subtableName(String tableName,int secondPosition,int position ){
+        tableName =tableName.substring(secondPosition,position);
+        return tableName.substring(0,1).toUpperCase()+tableName.substring(1);
+    }
+
 
     public static void main(String[] args) {
         FreemarkerTemplateEngine freemarkerTemplateEngine = new FreemarkerTemplateEngine();
         freemarkerTemplateEngine.humpName("t_user_name");
     }
+
+
 }

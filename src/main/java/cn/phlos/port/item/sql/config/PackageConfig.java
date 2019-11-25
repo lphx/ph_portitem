@@ -25,8 +25,8 @@ import java.util.Map;
 /**
  * 跟包相关的配置项
  *
- * @author YangHu, tangguo, hubin
- * @since 2016-08-30
+ * @author penghongl
+ * @since 13:48 2019/11/25
  */
 
 @Data
@@ -36,7 +36,7 @@ public class PackageConfig {
     /**
      * 父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
      */
-    private String parent = "com.baomidou";
+    private String parent = "cn.phlos";
     /**
      * 父包模块名
      */
@@ -57,10 +57,6 @@ public class PackageConfig {
      * Mapper包名
      */
     private String mapper = "mapper";
-    /**
-     * Mapper XML包名
-     */
-    private String xml = "mapper.xml";
     /**
      * Controller包名
      */

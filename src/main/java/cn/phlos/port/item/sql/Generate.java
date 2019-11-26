@@ -35,6 +35,8 @@ public class Generate {
         freemarkerTemplateEngine.write(dataMap,"serviceImpl.ftl",path+"/service/impl/"+oupFile+"ServiceImpl.java");
         freemarkerTemplateEngine.existsFile(path+"/mapper");
         freemarkerTemplateEngine.write(dataMap,"mapper.ftl",path+"/mapper/"+oupFile+"Mapper.java");
+        freemarkerTemplateEngine.existsFile(path+"/entity");
+        freemarkerTemplateEngine.write(dataMap,"entity.ftl",path+"/entity/"+oupFile+".java");
     }
 
 }

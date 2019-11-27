@@ -3,6 +3,9 @@ package cn.phlos.port.item.sql;
 import cn.phlos.port.item.sql.config.DataSourceConfig;
 import cn.phlos.port.item.sql.config.TableField;
 import cn.phlos.port.item.sql.engine.FreemarkerTemplateEngine;
+import cn.phlos.port.item.sql.rules.DbColumnType;
+import cn.phlos.port.item.sql.rules.IColumnType;
+import cn.phlos.port.item.sql.rules.MySqlTypeConvert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +61,7 @@ public class Generate {
         List<String> tableList = getTableNames(conn);
         System.out.println(tableList);
         for(String tableName : tableList){
-            System.out.println("ColumnNames:" + getColumnNames(tableName,conn));
+            System.out.println("table:" + getColumnNames(tableName,conn));
         }
 
     }
@@ -99,6 +102,7 @@ public class Generate {
      */
     public static List<TableField> getColumnNames(String tableName, Connection conn) {
         List<TableField> columnNames = new ArrayList<>();
+        MySqlTypeConvert mySqlTypeConvert = new MySqlTypeConvert();
         //与数据库的连接
         PreparedStatement pStemt = null;
         String tableSql = "SELECT * FROM " + tableName;
@@ -111,7 +115,8 @@ public class Generate {
             //表列数
             for (int i = 0; i < rsmd.getColumnCount(); i++) {
                 rs.next();
-                TableField t = new TableField(rsmd.getColumnName(i + 1),rsmd.getColumnTypeName(i + 1),rs.getString("Comment"));
+                String type = rsmd.getColumnTypeName(i + 1);
+                TableField t = new TableField(rsmd.getColumnName(i + 1), mySqlTypeConvert.processTypeConvert(type).getType(),rs.getString("Comment"));
                 columnNames.add(t);
             }
 

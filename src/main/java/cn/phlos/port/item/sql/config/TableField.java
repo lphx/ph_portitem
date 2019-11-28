@@ -10,9 +10,30 @@ import java.util.Map;
 @ToString
 public class TableField {
 
+    /**
+     * 表名
+     */
     private String tableName;
-    private String tableType;
+    /**
+     * 表字段
+     */
+    private String field;
+    /**
+     * 字段类型
+     */
+    private String type;
+
+    private String transitionType;
+    /**
+     * 类型长度
+     */
+    private String typeSize;
+    /**
+     * 字段备注
+     */
     private String comment;
+
+
 
    /* private List<TableField> tableList;
 
@@ -21,9 +42,4 @@ public class TableField {
 
     public TableField(){}
 
-    public TableField(String tableName, String tableType, String comment) {
-        this.tableName = tableName;
-        this.tableType = tableType;
-        this.comment = comment;
-    }
 }

@@ -1,5 +1,6 @@
 package cn.phlos.port.item.sql;
 
+import cn.phlos.port.item.sql.builder.ConfigBuilder;
 import cn.phlos.port.item.sql.config.DataSourceConfig;
 import cn.phlos.port.item.sql.config.TableField;
 import cn.phlos.port.item.sql.engine.FreemarkerTemplateEngine;
@@ -10,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName Generate 测试生成代码类
@@ -26,14 +24,13 @@ public class Generate {
 
     //测试路径
     private static String path = "D:/test/aaaa";
-    private static String tableName = "t_user_name";
 
 
     public void test1() throws Exception {
         FreemarkerTemplateEngine freemarkerTemplateEngine = new FreemarkerTemplateEngine();
         freemarkerTemplateEngine.init();
 
-        String oupFile = freemarkerTemplateEngine.humpName(tableName);
+        String oupFile = freemarkerTemplateEngine.humpName("tableName");
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("classPath", "com.freemark.hello");
         dataMap.put("className", "AutoCodeDemo");
@@ -59,12 +56,16 @@ public class Generate {
         dataSourceConfig.init();
         Connection conn = dataSourceConfig.getConnection();
         List<String> tableList = getTableNames(conn);
-        System.out.println(tableList);
-        for(String tableName : tableList){
-            System.out.println("table:" + getColumnNames(tableName,conn));
+        for (String tableName : tableList){
+            List<TableField> table1 = getColumnNames(tableName,conn);
+            new ConfigBuilder().shiti(table1,tableName);
         }
 
+
+
+
     }
+
 
 
     /**
@@ -97,28 +98,30 @@ public class Generate {
 
     /**
      * 获取表中所有字段名称
-     * @param tableName 表名
-     * @return
      */
-    public static List<TableField> getColumnNames(String tableName, Connection conn) {
-        List<TableField> columnNames = new ArrayList<>();
+    public static  List<TableField>  getColumnNames( String tableName, Connection conn) {
+        List<TableField> table = new ArrayList<>();
         MySqlTypeConvert mySqlTypeConvert = new MySqlTypeConvert();
         //与数据库的连接
         PreparedStatement pStemt = null;
-        String tableSql = "SELECT * FROM " + tableName;
         ResultSet rs = null;
         try {
-            pStemt = conn.prepareStatement(tableSql);
-            //结果集元数据--字段名称--类型--注释
-            rs = pStemt.executeQuery("show full columns from " + tableName);
-            ResultSetMetaData rsmd = pStemt.getMetaData();
-            //表列数
-            for (int i = 0; i < rsmd.getColumnCount(); i++) {
-                rs.next();
-                String type = rsmd.getColumnTypeName(i + 1);
-                TableField t = new TableField(rsmd.getColumnName(i + 1), mySqlTypeConvert.processTypeConvert(type).getType(),rs.getString("Comment"));
-                columnNames.add(t);
+            DatabaseMetaData dbMetaData = conn.getMetaData();
+            //获取单个表下的内容
+            rs = dbMetaData.getColumns(null, "%", tableName, "%");
+            while (rs.next()) {
+                TableField tableField = new TableField();
+                tableField.setTableName(tableName);
+                tableField.setField(rs.getString("COLUMN_NAME"));
+                tableField.setType(rs.getString("TYPE_NAME"));
+                tableField.setTransitionType(mySqlTypeConvert.processTypeConvert(tableField.getType()).getType());
+                tableField.setTypeSize(rs.getString("COLUMN_SIZE"));
+                tableField.setComment(rs.getString("REMARKS"));
+                table.add(tableField);
+
+
             }
+
 
         } catch (SQLException e) {
             LOGGER.error("getColumnNames failure", e);
@@ -126,13 +129,14 @@ public class Generate {
             if (pStemt != null) {
                 try {
                     pStemt.close();
-//                    conn.close();
+                    rs.close();
+                    conn.close();
                 } catch (SQLException e) {
                     LOGGER.error("getColumnNames close pstem and connection failure", e);
                 }
             }
         }
-        return columnNames;
+        return table;
     }
 
 

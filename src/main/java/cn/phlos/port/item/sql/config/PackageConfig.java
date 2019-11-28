@@ -19,6 +19,7 @@ package cn.phlos.port.item.sql.config;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -30,7 +31,7 @@ import java.util.Map;
  */
 
 @Data
-@Accessors(chain = true)
+//@Accessors(chain = true)
 public class PackageConfig {
 
     /**
@@ -69,10 +70,10 @@ public class PackageConfig {
     /**
      * 父包名
      */
-    /*public String getParent() {
-        if (StringUtils.isNotBlank(moduleName)) {
-            return parent + StringPool.DOT + moduleName;
+    public String getParent() {
+        if (!StringUtils.isEmpty(moduleName)) {
+            return  moduleName;
         }
         return parent;
-    }*/
+    }
 }

@@ -19,20 +19,14 @@ public class DataSourceConfig {
     private String password;
 
 
-    public void init(){
-        try {
-            Class.forName(this.driverClass);
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("数据库连接失败");
-        }
-    }
 
     public  Connection getConnection() {
         Connection conn = null;
         try {
+            Class.forName(this.driverClass);
             conn = DriverManager.getConnection(this.url, this.username, this.password);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return conn;

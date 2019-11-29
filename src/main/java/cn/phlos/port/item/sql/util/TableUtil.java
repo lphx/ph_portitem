@@ -83,7 +83,7 @@ public class TableUtil {
                 try {
                     pStemt.close();
                     rs.close();
-                    conn.close();
+                    //conn.close();
                 } catch (SQLException e) {
                     LOGGER.error("getColumnNames close pstem and connection failure", e);
                 }

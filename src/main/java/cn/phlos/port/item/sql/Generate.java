@@ -2,6 +2,7 @@ package cn.phlos.port.item.sql;
 
 import cn.phlos.port.item.sql.builder.ConfigBuilder;
 import cn.phlos.port.item.sql.config.DataSourceConfig;
+import cn.phlos.port.item.sql.config.GlobalConfig;
 import cn.phlos.port.item.sql.config.TableField;
 import cn.phlos.port.item.sql.config.TableInfo;
 import cn.phlos.port.item.sql.engine.FreemarkerTemplateEngine;
@@ -48,23 +49,23 @@ public class Generate {
         freemarkerTemplateEngine.write(dataMap,"entity.ftl",path+"/entity/"+oupFile+".java");
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setDriverClass("com.mysql.cj.jdbc.Driver");
         dataSourceConfig.setUrl("jdbc:mysql://120.78.151.208:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC");
         dataSourceConfig.setUsername("root");
         dataSourceConfig.setPassword("li15775063262");
+        Connection connection = dataSourceConfig.getConnection();
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setConnection(connection);
+        globalConfig.getTableNameList();
+        globalConfig.setPrefix("t_");
+        for (TableInfo info : globalConfig.getTableInfo()){
+            System.out.println("info = " + info);
+        }
+        connection.close();
         ConfigBuilder configBuilder = new ConfigBuilder(dataSourceConfig);
         configBuilder.execute();
-
-
-        /*List<String> tableList = getTableNames(conn);
-        tableInfo.getFields();
-        for (String tableName : tableList){
-            List<TableField> table1 = getColumnNames(tableName,conn);
-            new ConfigBuilder().createEntity(table1,tableName);
-        }*/
-
 
 
 

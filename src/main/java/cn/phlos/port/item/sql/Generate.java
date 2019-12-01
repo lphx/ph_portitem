@@ -55,15 +55,6 @@ public class Generate {
         dataSourceConfig.setUrl("jdbc:mysql://120.78.151.208:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC");
         dataSourceConfig.setUsername("root");
         dataSourceConfig.setPassword("li15775063262");
-        Connection connection = dataSourceConfig.getConnection();
-        GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setConnection(connection);
-        globalConfig.getTableNameList();
-        globalConfig.setPrefix("t_");
-        for (TableInfo info : globalConfig.getTableInfo()){
-            System.out.println("info = " + info);
-        }
-        connection.close();
         ConfigBuilder configBuilder = new ConfigBuilder(dataSourceConfig);
         configBuilder.execute();
 

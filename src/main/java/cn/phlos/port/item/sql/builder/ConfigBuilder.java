@@ -40,8 +40,13 @@ public class ConfigBuilder {
      * 生成代码
      */
     public void execute() {
-        //List<String> tableNameList = globalConfig.getTableNameList(this.connection);
-
+        globalConfig = new GlobalConfig();
+        globalConfig.setConnection(connection);
+        globalConfig.getTableNameList();
+        globalConfig.setPrefix("t_");
+        for (TableInfo info : globalConfig.getTableInfo()){
+            System.out.println("info = " + info);
+        }
         //1.生成实体类
         //createEntity();
         //2.生成mapper类

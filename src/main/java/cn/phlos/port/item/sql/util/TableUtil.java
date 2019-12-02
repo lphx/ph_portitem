@@ -31,7 +31,7 @@ public class TableUtil {
             //获取数据库的元数据
             DatabaseMetaData db = conn.getMetaData();
             //从元数据中获取到所有的表名
-            rs = db.getTables("test", null, null, new String[] { "TABLE" });
+            rs = db.getTables(conn.getCatalog(), null, null, new String[] { "TABLE" });
             while(rs.next()) {
                 tableNames.add(rs.getString(3));
             }
@@ -66,6 +66,7 @@ public class TableUtil {
                 TableField tableField = new TableField();
                 tableField.setTableName(tableName);
                 tableField.setField(rs.getString("COLUMN_NAME"));
+                tableField.setTransitionField(humpName(tableField.getField()));
                 tableField.setType(rs.getString("TYPE_NAME"));
                 tableField.setTransitionType(mySqlTypeConvert.processTypeConvert(tableField.getType()).getType());
                 tableField.setTypeSize(rs.getString("COLUMN_SIZE"));
@@ -90,6 +91,20 @@ public class TableUtil {
             }
         }
         return table;
+    }
+
+    /**
+     * 判断,如t_user_name,去掉t改为UserName
+     */
+    private static String humpName(String tableName) {
+
+        String aa[] = tableName.split("_");
+        String letter=aa[0];
+        for(int i=1;i<aa.length;i++){
+
+            letter+=aa[i].substring(0,1).toUpperCase()+aa[i].substring(1);
+        }
+        return letter;
     }
 
 }

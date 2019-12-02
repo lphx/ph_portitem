@@ -2,6 +2,9 @@
 package cn.phlos.port.item.sql.engine;
 
 
+import cn.phlos.port.item.sql.builder.ConfigBuilder;
+import cn.phlos.port.item.sql.config.PackageConfig;
+import cn.phlos.port.item.sql.config.TableInfo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.slf4j.Logger;
@@ -12,18 +15,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 
 public class FreemarkerTemplateEngine {
     protected static final Logger logger = LoggerFactory.getLogger(FreemarkerTemplateEngine.class);
 
+    /**
+     * 配置信息
+     */
+    private ConfigBuilder configBuilder;
+
+
     private Configuration configuration;
 
     public void init(){
-        configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        configuration.setDefaultEncoding("UTF-8");
-        configuration.setClassForTemplateLoading(FreemarkerTemplateEngine.class,"/templates");
+
     }
 
 
@@ -33,6 +42,30 @@ public class FreemarkerTemplateEngine {
         logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
     }
 
+
+    public void create(List<TableInfo> tableInfo) throws Exception {
+        //创建实体
+        for (TableInfo table :tableInfo){
+            Map<String,Object> objectMap=getObjectMap(table);
+            PackageConfig packageConfig = new PackageConfig();
+            String path =configBuilder.globalConfig().getOupFile()+"/"+configBuilder.getPackageConfig().getParent().replaceAll("\\.","/")+"/";
+            String entityFile =path+packageConfig.getEntity()+"/";
+            existsFile(entityFile);
+            write(objectMap,"entity.ftl",entityFile+table.getEntityName()+".java");
+            String mapperFile = path+packageConfig.getMapper()+"/";
+            existsFile(mapperFile);
+            write(objectMap,"mapper.ftl",mapperFile+table.getMapperName()+".java");
+        }
+    }
+
+
+    public Map<String,Object> getObjectMap(TableInfo tableInfo){
+        Map<String,Object> objectMap = new TreeMap<>();
+        ConfigBuilder configBuilder = this.configBuilder;
+        objectMap.put("package",configBuilder.getPackageConfig());
+        objectMap.put("table",tableInfo);
+        return objectMap;
+    }
 
     /**
      * 创建文件夹
@@ -69,4 +102,12 @@ public class FreemarkerTemplateEngine {
     }
 
 
+    public FreemarkerTemplateEngine(ConfigBuilder configBuilder) {
+        this.configBuilder = configBuilder;
+        configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        configuration.setDefaultEncoding("UTF-8");
+        configuration.setClassForTemplateLoading(FreemarkerTemplateEngine.class,"/templates");
+    }
+    public FreemarkerTemplateEngine() {
+    }
 }

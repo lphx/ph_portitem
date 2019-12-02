@@ -1,14 +1,15 @@
-package ${entityPackage};
+package ${package.parent}.${package.entity};
 import java.io.Serializable;
 
 
-@TableName("")
-public class ${entity} implements Serializable {
+@TableName("${table.name}")
+public class ${table.convertName} implements Serializable {
 
 
-private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+
 <#-- 循环属性名称 -->
-<#list table as field>
+<#list table.fields as field>
     <#--<#if field.comment??>
         /**
         * ${field.comment}
@@ -17,7 +18,7 @@ private static final long serialVersionUID = 1L;
     <#--<#if field.keyIdentityFlag>
         @TableId(value="${field.name}", type= IdType.AUTO)
     </#if>-->
-    private ${field.transitionType} ${field.field};
+    private ${field.transitionType} ${field.transitionField};
 
 </#list>
 }

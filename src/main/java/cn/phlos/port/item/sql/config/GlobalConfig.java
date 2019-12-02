@@ -22,7 +22,8 @@ public class GlobalConfig {
     /**
      * 输出路径
      */
-    private String oupFile = "D:/";
+    private String oupFile = "D://";
+
     /**
      * 切除对应的头
      */
@@ -93,5 +94,13 @@ public class GlobalConfig {
 
     public void setConnection(Connection connection){
         this.connection = connection;
+    }
+
+    public String getOupFile() {
+        return oupFile;
+    }
+
+    public void setOupFile(String oupFile) {
+        this.oupFile = oupFile;
     }
 }

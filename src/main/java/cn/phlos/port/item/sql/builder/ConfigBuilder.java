@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class ConfigBuilder {
 
     private PackageConfig packageConfig ;
@@ -24,29 +25,27 @@ public class ConfigBuilder {
      */
     private Connection connection;
 
+    private FreemarkerTemplateEngine freemarkerTemplateEngine = new FreemarkerTemplateEngine(this);
+
    // private TemplateConfig templateConfig;
 
-    public ConfigBuilder(DataSourceConfig dataSourceConfig) {
 
+
+    public ConfigBuilder(DataSourceConfig dataSourceConfig, GlobalConfig globalConfig, PackageConfig packageConfig) {
         this.dataSourceConfig = dataSourceConfig;
         handlerDataSource(dataSourceConfig);
-
-    }
-
-    public ConfigBuilder() {
+        this.globalConfig = globalConfig;
+        this.packageConfig = packageConfig;
     }
 
     /**
      * 生成代码
      */
-    public void execute() {
-        globalConfig = new GlobalConfig();
+    public void execute() throws Exception {
         globalConfig.setConnection(connection);
         globalConfig.getTableNameList();
         globalConfig.setPrefix("t_");
-        for (TableInfo info : globalConfig.getTableInfo()){
-            System.out.println("info = " + info);
-        }
+        freemarkerTemplateEngine.create(globalConfig.getTableInfo());
         //1.生成实体类
         //createEntity();
         //2.生成mapper类
@@ -91,5 +90,18 @@ public class ConfigBuilder {
             return new TableInfo();
         }
         return tableInfo;
+    }
+
+    /**
+     * 所有包配置信息
+     *
+     * @return 包配置
+     */
+    public PackageConfig getPackageConfig() {
+        return packageConfig;
+    }
+
+    public GlobalConfig globalConfig(){
+        return globalConfig;
     }
 }

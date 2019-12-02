@@ -19,10 +19,17 @@ public class TableField {
      */
     private String field;
     /**
+     * 转换表字段名
+     */
+    private String transitionField;
+    /**
      * 字段类型
      */
     private String type;
 
+    /**
+     * 转化类型
+     */
     private String transitionType;
     /**
      * 类型长度

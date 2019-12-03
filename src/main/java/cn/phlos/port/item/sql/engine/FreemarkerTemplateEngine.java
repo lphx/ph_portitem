@@ -49,12 +49,27 @@ public class FreemarkerTemplateEngine {
             Map<String,Object> objectMap=getObjectMap(table);
             PackageConfig packageConfig = new PackageConfig();
             String path =configBuilder.globalConfig().getOupFile()+"/"+configBuilder.getPackageConfig().getParent().replaceAll("\\.","/")+"/";
+            //entity
             String entityFile =path+packageConfig.getEntity()+"/";
             existsFile(entityFile);
             write(objectMap,"entity.ftl",entityFile+table.getEntityName()+".java");
+            //mapper
             String mapperFile = path+packageConfig.getMapper()+"/";
             existsFile(mapperFile);
             write(objectMap,"mapper.ftl",mapperFile+table.getMapperName()+".java");
+            //service
+            String serviceFile = path+packageConfig.getService()+"/";
+            existsFile(serviceFile);
+            write(objectMap,"service.ftl",serviceFile+table.getServiceName()+".java");
+            //serviceImpl
+            String serviceImplFile = path+packageConfig.getServiceImpl().replaceAll("\\.","/")+"/";
+            existsFile(serviceImplFile);
+            write(objectMap,"serviceImpl.ftl",serviceImplFile+table.getServiceImplName()+".java");
+            //controller
+            String controllerFile = path+packageConfig.getController()+"/";
+            existsFile(controllerFile);
+            write(objectMap,"controller.ftl",controllerFile+table.getControllerName()+".java");
+            logger.debug("----------------------------------成功生成表："+table.getName()+"的文件-----------------------------------------------");
         }
     }
 
@@ -76,7 +91,7 @@ public class FreemarkerTemplateEngine {
         if (!file.exists()){
             file.mkdirs();
         }
-        logger.debug("创建出："+path);
+//        logger.debug("创建出："+path);
     }
 
     /**

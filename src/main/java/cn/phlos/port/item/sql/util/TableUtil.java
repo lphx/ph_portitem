@@ -72,8 +72,6 @@ public class TableUtil {
                 tableField.setTypeSize(rs.getString("COLUMN_SIZE"));
                 tableField.setComment(rs.getString("REMARKS"));
                 table.add(tableField);
-
-
             }
 
 
@@ -91,6 +89,26 @@ public class TableUtil {
             }
         }
         return table;
+    }
+
+    /**
+     * 获取主键
+     */
+    public static String primaryKey(String tableName,Connection conn){
+        String primaryKey=null;
+        try {
+            DatabaseMetaData dbMetaData = conn.getMetaData();
+            ResultSet rs = null;
+            rs = dbMetaData.getPrimaryKeys(null, null, tableName);
+
+            while (rs.next()) {
+                primaryKey = rs.getString("COLUMN_NAME");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return primaryKey;
     }
 
     /**

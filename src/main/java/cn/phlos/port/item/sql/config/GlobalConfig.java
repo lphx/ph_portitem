@@ -52,6 +52,7 @@ public class GlobalConfig {
                 tableInfo.setName(tableName);
                 tableInfo.setConvertName(humpName(tableName));
                 tableInfo.setFields( TableUtil.getColumnNames(tableName,connection));
+                tableInfo.setPrimaryKey( TableUtil.primaryKey(tableName,connection));
                 list.add(tableInfo);
             }
         }

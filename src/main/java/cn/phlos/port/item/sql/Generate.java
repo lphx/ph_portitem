@@ -49,13 +49,13 @@ public class Generate {
     public static void main(String[] args) throws Exception {
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setDriverClass("com.mysql.cj.jdbc.Driver");
-        dataSourceConfig.setUrl("jdbc:mysql://120.78.151.208:3306/makelove?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC");
+        dataSourceConfig.setUrl("jdbc:mysql://120.78.151.208:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC");
         dataSourceConfig.setUsername("root");
         dataSourceConfig.setPassword("li15775063262");
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setOupFile("D://test");
         PackageConfig packageConfig = new PackageConfig();
-        packageConfig.setModuleName("cn.phlos1");
+        packageConfig.setModuleName("cn.phlos.ph_portiem_test");
         ConfigBuilder configBuilder = new ConfigBuilder(dataSourceConfig,globalConfig,packageConfig);
         configBuilder.execute();
 

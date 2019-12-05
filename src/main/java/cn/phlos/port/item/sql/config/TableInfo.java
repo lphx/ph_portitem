@@ -13,10 +13,15 @@ import java.util.Set;
 @Data
 public class TableInfo {
 
+    /**
+     * 主键
+     */
+    private String primaryKey;
     private final Set<String> importPackages = new HashSet<>();
     private boolean convert;
     private String name;
     private String convertName;
+    private String convertNameLower;
     private String comment;
     private String entityName;
     private String mapperName;
@@ -33,5 +38,6 @@ public class TableInfo {
         this.serviceName = convertName+"Service";
         this.serviceImplName = convertName+"ServiceIpml";
         this.controllerName = convertName+"Controller";
+        this.convertNameLower = convertName.substring(0,1).toLowerCase()+convertName.substring(1);
     }
 }

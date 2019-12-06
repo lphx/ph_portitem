@@ -66,11 +66,12 @@ public class TableUtil {
                 TableField tableField = new TableField();
                 tableField.setTableName(tableName);
                 tableField.setField(rs.getString("COLUMN_NAME"));
-                tableField.setTransitionField(humpName(tableField.getField()));
+                tableField.setTransitionField(StrUilt.humpName(tableField.getField()));
                 tableField.setType(rs.getString("TYPE_NAME"));
                 tableField.setTransitionType(mySqlTypeConvert.processTypeConvert(tableField.getType()).getType());
                 tableField.setTypeSize(rs.getString("COLUMN_SIZE"));
                 tableField.setComment(rs.getString("REMARKS"));
+                tableField.setTransitionFieldLower(StrUilt.toOneLower(tableField.getTransitionField()));
                 table.add(tableField);
             }
 
@@ -111,18 +112,7 @@ public class TableUtil {
         return primaryKey;
     }
 
-    /**
-     * 判断,如t_user_name,去掉t改为UserName
-     */
-    private static String humpName(String tableName) {
 
-        String aa[] = tableName.split("_");
-        String letter=aa[0];
-        for(int i=1;i<aa.length;i++){
 
-            letter+=aa[i].substring(0,1).toUpperCase()+aa[i].substring(1);
-        }
-        return letter;
-    }
 
 }

@@ -1,5 +1,6 @@
 package cn.phlos.port.item.sql.config;
 
+import cn.phlos.port.item.sql.util.StrUilt;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -26,6 +27,8 @@ public class TableInfo {
     private String entityName;
     private String mapperName;
     private String serviceName;
+    private String mapperNameLower;
+    private String serviceNameLower;
     private String serviceImplName;
     private String controllerName;
     private List<TableField> fields;
@@ -38,6 +41,8 @@ public class TableInfo {
         this.serviceName = convertName+"Service";
         this.serviceImplName = convertName+"ServiceIpml";
         this.controllerName = convertName+"Controller";
-        this.convertNameLower = convertName.substring(0,1).toLowerCase()+convertName.substring(1);
+        this.convertNameLower = StrUilt.toOneLower(convertName);
+        this.mapperNameLower = StrUilt.toOneLower(this.mapperName);
+        this.serviceNameLower = StrUilt.toOneLower(this.serviceName);
     }
 }

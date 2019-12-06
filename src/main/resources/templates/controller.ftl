@@ -1,16 +1,60 @@
 package ${package.parent}.${package.controller}
 
-
+import ${package.parent}.${package.entity}.${table.convertName};
+import ${package.parent}.${package.service}.${table.serviceName};
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-
 import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/${table.name}")
+@RequestMapping("/${table.convertNameLower}")
 public class ${table.controllerName} {
 
+    @Autowired
+    private ${table.serviceName} ${table.serviceNameLower};
+
+    @PostMapping("/page")
+    public  List<${table.convertName}> page(Integer pageSize,Integer pageCount) {
+        return ${table.serviceNameLower}.page(pageSize,pageCount);
+    }
+
+    @PutMapping("/update")
+    public String update(${table.convertName} ${table.convertNameLower}) {
+        ${table.serviceNameLower}.update(${table.convertNameLower});
+        return "success";
+    }
+
+    @PostMapping("save")
+    public int save(${table.convertName} ${table.convertNameLower}) {
+        int count = ${table.serviceNameLower}.save(${table.convertNameLower});
+        return count;
+    }
+
+    @DeleteMapping("/remove")
+    <#list table.fields as field><#if field.field == table.primaryKey>
+    public String remove(${field.transitionType} ${field.transitionFieldLower}) {
+        ${table.serviceNameLower}.remove(${field.transitionFieldLower});
+        return "success";
+    }
+    </#if></#list>
+
+    @GetMapping("/count")
+    public int count() {
+        return ${table.serviceNameLower}.count();
+    }
+
+    @GetMapping("findById")
+    <#list table.fields as field><#if field.field == table.primaryKey>
+    public User findById(${field.transitionType} ${field.transitionFieldLower}) {
+        return ${table.serviceNameLower}.findOne(${field.transitionFieldLower});
+    }
+    </#if></#list>
+
+    @GetMapping("/findAll")
+    public List<${table.convertName}> findAll() {
+        return ${table.serviceNameLower}.findAllList();
+    }
 
 }
 

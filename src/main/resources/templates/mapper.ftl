@@ -21,26 +21,42 @@ public interface ${table.mapperName}{
     })
     List<${table.convertName}> findAllList();
 
+    /**
+     * 查询一条数据
+     */
     @Select("SELECT <#list table.fields as field>${field.field}<#if field_index != table.fields?size-1>,</#if></#list> FROM ${table.name} WHERE ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
     @ResultMap(value = "select${table.convertName}")
-    User findOne(@Param("<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionField}</#if></#list>") Integer id);
+    User findOne(@Param("<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionField}") ${field.transitionType} ${field.transitionFieldLower}</#if></#list>);
 
 
-
+    /**
+     * 添加数据
+     */
     @Insert("INSERT INTO  ${table.name}( <#list table.fields as field>${field.field}<#if field_index != table.fields?size-1>,</#if></#list>) VALUES(<#list table.fields as field>${r"#{"}${field.transitionField}${r"}"}<#if field_index != table.fields?size-1>,</#if></#list>)")
     int save(${table.convertName} ${table.convertNameLower});
 
+    /**
+     * 分页查询数据
+     */
     @Select("SELECT * FROM  ${table.name} limit ${r"#{pageSize}"},${r"#{pageCount}"})")
     List<User> page(Param("pageSize")Integer pageSize,Param("pageCount")Integer pageCount);
 
-    @Update("UPDATE  <#list table.fields as field>${field.field}=${r"#{"}${field.transitionField}${r"}"}<#if field_index != table.fields?size-1>,</#if></#list> where ${table.primaryKey}= <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
+    /**
+     * 更新数据
+     */
+    @Update("UPDATE  <#list table.fields as field>${field.field}=${r"#{"}${field.transitionField}${r"}"}<#if field_index != table.fields?size-1>,</#if></#list> where ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
     void update(${table.convertName} ${table.convertNameLower});
 
 
-
+    /**
+     * 删除数据
+     */
     @Delete("DELETE FROM  ${table.name} where ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
-    void remove(@Param("<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionField}</#if></#list>") Integer id);
+    void remove(@Param("<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionField}") ${field.transitionType} ${field.transitionFieldLower}</#if></#list>);
 
+    /**
+     * 表的数据条数
+     */
     @Select("SELECT COUNT(*) FROM  ${table.name}")
     int count();
 

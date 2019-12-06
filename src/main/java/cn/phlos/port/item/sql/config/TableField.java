@@ -23,6 +23,10 @@ public class TableField {
      */
     private String transitionField;
     /**
+     * 转换表字段名
+     */
+    private String transitionFieldLower;
+    /**
      * 字段类型
      */
     private String type;

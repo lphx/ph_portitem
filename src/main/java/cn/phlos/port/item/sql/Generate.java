@@ -49,7 +49,7 @@ public class Generate {
     public static void main(String[] args) throws Exception {
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setDriverClass("com.mysql.cj.jdbc.Driver");
-        dataSourceConfig.setUrl("jdbc:mysql://120.78.151.208:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC");
+        dataSourceConfig.setUrl("jdbc:mysql://120.78.151.208:3306/aaaa?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC");
         dataSourceConfig.setUsername("root");
         dataSourceConfig.setPassword("li15775063262");
         GlobalConfig globalConfig = new GlobalConfig();

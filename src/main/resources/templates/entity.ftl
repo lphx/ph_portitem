@@ -1,8 +1,9 @@
 package ${package.parent}.${package.entity};
 import java.io.Serializable;
-
+import lombok.Data;
 
 @TableName("${table.name}")
+@Data
 public class ${table.convertName} implements Serializable {
 
 

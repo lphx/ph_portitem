@@ -1,6 +1,9 @@
 package cn.phlos.port.item.sql.api;
 
+import cn.phlos.port.item.sql.builder.ConfigBuilder;
 import cn.phlos.port.item.sql.config.DataSourceConfig;
+import cn.phlos.port.item.sql.config.GlobalConfig;
+import cn.phlos.port.item.sql.config.PackageConfig;
 import cn.phlos.port.item.sql.util.TableUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +19,25 @@ public class GenerateApi {
     @Autowired
     private DataSourceConfig dataSourceConfig;
 
-    @GetMapping("/formData")
-    public List<String> formData(String url,String username,String password){
+    @PostMapping("/formData")
+    public List<String> formData(DataSourceConfig dataSource){
+        dataSourceConfig = dataSource;
         dataSourceConfig.setDriverClass("com.mysql.cj.jdbc.Driver");
-        dataSourceConfig.setUrl(url);
-        dataSourceConfig.setPassword(password.replace("111,",""));
-        dataSourceConfig.setUsername(username);
         List<String> tableNames = TableUtil.getTableNames(dataSourceConfig.getConnection());
         return tableNames;
+    }
+
+    @GetMapping("/tableFrom")
+    public String tableFrom(String tablebox,String fileName,String backName) throws Exception {
+        System.out.println(tablebox+"    "+fileName+backName);
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setOupFile(fileName);//"D://test"
+        globalConfig.setTableNameList(tablebox);
+        PackageConfig packageConfig = new PackageConfig();
+        packageConfig.setModuleName(backName);//"cn.phlos.ph_portiem_test"
+        ConfigBuilder configBuilder = new ConfigBuilder(dataSourceConfig,globalConfig,packageConfig);
+        configBuilder.executeApi();
+        return "成功生成";
     }
 
 }

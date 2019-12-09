@@ -10,25 +10,23 @@
 <div style="text-align:center">欢迎登陆网站，该网站为接口代码生成</div>
 
 <div >
-    <form id="dataForm" >
+    <form id="dataForm" action="/formData" method="post">
         数据库地址：<input id="url" name="url"> ps:xxx.xxx.xxx.xxx:3306/test
         <br>账号：<input id="username" name="username">
         <br>密码：<input id="password" name="password">
+        <input name="driverClass" hidden>
         <br><button  id="submitData">查询</button>
     </form>
 
 </div>
+<br>
+<br>
+<br>
+<div id="showtable">
 
-<div >
-    <p id="showtable"></p>
-    <form action="" method="get">
-        <input name="Fruit" type="checkbox" value="" />1.xxxxx<br>
-        <input name="Fruit" type="checkbox" value="" />1.xxxxx
-        <input name="fileName">文件保存路径如：D:/
-        <input name="backName">包名 如：cn.phlos
-    </form>
+
 </div>
-<button onclick="aa()">1111</button>
+
 
 <script>
     function aa(){
@@ -38,28 +36,64 @@
     }
 
     $("#submitData").click(function(){
-
+        var targetUrl = $("#dataForm").attr("action");
         var data = $("#dataForm").serialize();
         $.ajax({
-            type:'get',
-            url:'/formData',
+            type:'post',
+            url:targetUrl,
             cache: false,
             data:data,
             dataType:'json',
             success:function(data){
-                alert("请求")
-                var tableNameHtml="";
+                alert(data[1])
+                var tableNameHtml='<form action="/tableFrom" method="get" id="tableForm">';
                 for(var i=0;i<data.length;i++){
-                    tableNameHtml+='<input name='+data[i]+' type="checkbox" value="" />'+data[i]+'<br>';
+                    tableNameHtml+='<input name="tablebox" type="checkbox" value='+data[i]+' />'+data[i]+'<br>';
                 }
+                tableNameHtml+=' 文件保存路径如：<input name="fileName">如：D:/<br>'
+                                +'包名:<input name="backName"> 如：cn.phlos<br>'
+                                +'<br><button  id="submitTable">生成</button>'
+                                +'</form>';
                 $("#showtable").html(tableNameHtml);
             },
             error:function(){
                 alert("请求失败")
             }
+
         })
 
+        return false;
     })
+
+    var temp =[];//该变量是为了判断最后一次循环而定义
+    $("input[name='tablebox']:checked").each(function(){ //遍历所有checkbox选中的值
+        temp.push($(this).val());//设置值到数组中
+    });
+
+   /* $("#submitTable").click(function(){
+        var data =[];
+            data.fileName=$("#fileName").val();
+            data.backName=$("#backName").val();
+            data.box=temp;
+        alert(temp)
+        $.ajax({
+            type:'get',
+            url:"/tableFrom",
+            cache: false,
+            data:data,
+            dataType:'json',
+            success:function(data){
+                alert(data)
+
+            },
+            error:function(){
+                alert("请求失败")
+            }
+
+        })
+
+        return false;
+    })*/
 
 </script>
 </body>

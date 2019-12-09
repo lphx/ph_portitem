@@ -45,10 +45,11 @@ public class FreemarkerTemplateEngine {
 
     public void create(List<TableInfo> tableInfo) throws Exception {
         //创建实体
+        String path =configBuilder.globalConfig().getOupFile()+"/"+configBuilder.getPackageConfig().getParent().replaceAll("\\.","/")+"/";
         for (TableInfo table :tableInfo){
             Map<String,Object> objectMap=getObjectMap(table);
             PackageConfig packageConfig = new PackageConfig();
-            String path =configBuilder.globalConfig().getOupFile()+"/"+configBuilder.getPackageConfig().getParent().replaceAll("\\.","/")+"/";
+
             //entity
             String entityFile =path+packageConfig.getEntity()+"/";
             existsFile(entityFile);
@@ -71,6 +72,7 @@ public class FreemarkerTemplateEngine {
             write(objectMap,"controller.ftl",controllerFile+table.getControllerName()+".java");
             logger.debug("----------------------------------成功生成表："+table.getName()+"的文件-----------------------------------------------");
         }
+        open(path);
     }
 
 
@@ -124,5 +126,28 @@ public class FreemarkerTemplateEngine {
         configuration.setClassForTemplateLoading(FreemarkerTemplateEngine.class,"/templates");
     }
     public FreemarkerTemplateEngine() {
+    }
+
+    /**
+     * 打开输出目录
+     */
+    public void open(String path) {
+        String outDir =path;
+        if (!path.equals("")) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName != null) {
+                    if (osName.contains("Mac")) {
+                        Runtime.getRuntime().exec("open " + outDir);
+                    } else if (osName.contains("Windows")) {
+                        Runtime.getRuntime().exec("cmd /c start " + outDir);
+                    } else {
+                        logger.debug("文件输出目录:" + outDir);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

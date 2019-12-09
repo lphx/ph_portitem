@@ -104,4 +104,14 @@ public class GlobalConfig {
     public void setOupFile(String oupFile) {
         this.oupFile = oupFile;
     }
+
+    public void setTableNameList(String tablebox) {
+        String[] split = tablebox.split(",");
+
+        List<String> resultList = new ArrayList<>(split.length);
+        for (String s : split) {
+            resultList.add(s);
+        }
+        this.tableNameList = resultList;
+    }
 }

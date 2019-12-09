@@ -46,15 +46,16 @@ public class ConfigBuilder {
         globalConfig.getTableNameList();
         globalConfig.setPrefix("t_");
         freemarkerTemplateEngine.create(globalConfig.getTableInfo());
-        //1.生成实体类
-        //createEntity();
-        //2.生成mapper类
 
-        //3.生成service类
+    }
 
-        //4.生成service.impl
-
-        //5.生成controller
+    /**
+     * 生成代码
+     */
+    public void executeApi() throws Exception {
+        globalConfig.setConnection(connection);
+        globalConfig.setPrefix("t_");
+        freemarkerTemplateEngine.create(globalConfig.getTableInfo());
 
     }
     /**

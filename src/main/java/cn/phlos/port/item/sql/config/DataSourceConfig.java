@@ -12,11 +12,7 @@ import java.sql.SQLException;
 public class DataSourceConfig {
 
 
-    private String ipAddr;
 
-    private String port;
-
-    private String dataSource;
 
     private String driverClass;
 
@@ -34,8 +30,8 @@ public class DataSourceConfig {
         try {
             Class.forName(this.driverClass);
            // if (this.ipAddr.equals("")&&this.port.equals("")&&this.dataSource.equals("")){
-            this.url = "jdbc:mysql://"+this.url+"?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC";
-                conn = DriverManager.getConnection(this.url, this.username, this.password);
+            String url = "jdbc:mysql://"+getUrl()+"?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC";
+                conn = DriverManager.getConnection(url, this.username, this.password);
            /* }else {
                 //"jdbc:mysql://120.78.151.208:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"
                 String pageUrl = "jdbc:mysql://"+ipAddr+":"+port+"/"+dataSource+"?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC";

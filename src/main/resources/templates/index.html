@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>这个一个简陋的页面</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<body>
+
+<div style="text-align:center">欢迎登陆网站，该网站为接口代码生成</div>
+
+<div >
+    <form id="dataForm" >
+        数据库地址：<input id="url" name="url"> ps:xxx.xxx.xxx.xxx:3306/test
+        <br>账号：<input id="username" name="username">
+        <br>密码：<input id="password" name="password">
+        <br><button  id="submitData">查询</button>
+    </form>
+
+</div>
+
+<div >
+    <p id="showtable"></p>
+    <form action="" method="get">
+        <input name="Fruit" type="checkbox" value="" />1.xxxxx<br>
+        <input name="Fruit" type="checkbox" value="" />1.xxxxx
+        <input name="fileName">文件保存路径如：D:/
+        <input name="backName">包名 如：cn.phlos
+    </form>
+</div>
+<button onclick="aa()">1111</button>
+
+<script>
+    function aa(){
+        var tableNameHtml="";
+        tableNameHtml+='<input name="+d+" type="checkbox" value="" />1111<br>';
+        $("#showtable").append(tableNameHtml);
+    }
+
+    $("#submitData").click(function(){
+
+        var data = $("#dataForm").serialize();
+        $.ajax({
+            type:'get',
+            url:'/formData',
+            cache: false,
+            data:data,
+            dataType:'json',
+            success:function(data){
+                alert("请求")
+                var tableNameHtml="";
+                for(var i=0;i<data.length;i++){
+                    tableNameHtml+='<input name='+data[i]+' type="checkbox" value="" />'+data[i]+'<br>';
+                }
+                $("#showtable").html(tableNameHtml);
+            },
+            error:function(){
+                alert("请求失败")
+            }
+        })
+
+    })
+
+</script>
+</body>
+</html>

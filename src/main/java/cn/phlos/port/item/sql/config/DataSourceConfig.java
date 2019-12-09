@@ -1,12 +1,14 @@
 package cn.phlos.port.item.sql.config;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Data
+@Component
 public class DataSourceConfig {
 
 
@@ -32,6 +34,7 @@ public class DataSourceConfig {
         try {
             Class.forName(this.driverClass);
            // if (this.ipAddr.equals("")&&this.port.equals("")&&this.dataSource.equals("")){
+            this.url = "jdbc:mysql://"+this.url+"?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC";
                 conn = DriverManager.getConnection(this.url, this.username, this.password);
            /* }else {
                 //"jdbc:mysql://120.78.151.208:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"

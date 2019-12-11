@@ -5,6 +5,7 @@ package cn.phlos.port.item.sql.engine;
 import cn.phlos.port.item.sql.builder.ConfigBuilder;
 import cn.phlos.port.item.sql.config.PackageConfig;
 import cn.phlos.port.item.sql.config.TableInfo;
+import cn.phlos.port.item.sql.util.CompressUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.slf4j.Logger;
@@ -72,7 +73,9 @@ public class FreemarkerTemplateEngine {
             write(objectMap,"controller.ftl",controllerFile+table.getControllerName()+".java");
             logger.debug("----------------------------------成功生成表："+table.getName()+"的文件-----------------------------------------------");
         }
-        open(path);
+        String oupFile = configBuilder.globalConfig().getOupFile();
+        CompressUtil.generateFile(oupFile,"zip");
+        open(oupFile);
     }
 
 

@@ -75,7 +75,7 @@ public class FreemarkerTemplateEngine {
         }
         String oupFile = configBuilder.globalConfig().getOupFile();
         CompressUtil.generateFile(oupFile,"zip");
-        CompressUtil.delAllFile(new File(oupFile+"\\CompressFile"));
+        CompressUtil.delAllFile(new File(oupFile+"\\CompressFile1"));
         open(oupFile);
     }
 

@@ -39,14 +39,21 @@ public class FreemarkerTemplateEngine {
 
     public void write(Map<String,Object> map,String templatePath,String outputFile) throws Exception {
         Template template = configuration.getTemplate(templatePath);
-        template.process(map,new OutputStreamWriter(new FileOutputStream(outputFile),"UTF-8"));
+//        File file = new File(outputFile);
+        existsNewFile(outputFile);
+        OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outputFile),"UTF-8");
+        template.process(map,osw);
+        osw.close();
         logger.debug("模板:" + templatePath + ";  文件:" + outputFile);
     }
 
 
     public void create(List<TableInfo> tableInfo) throws Exception {
         //创建实体
-        String path =configBuilder.globalConfig().getOupFile()+"/"+configBuilder.getPackageConfig().getParent().replaceAll("\\.","/")+"/";
+        String oupFile = configBuilder.globalConfig().getOupFile();
+        String ospath = osLinuxOrWindows(oupFile);
+        String path =ospath+"/"+configBuilder.getPackageConfig().getParent().replaceAll("\\.","/")+"/";
+        System.out.println("============ = " + path);
         for (TableInfo table :tableInfo){
             Map<String,Object> objectMap=getObjectMap(table);
             PackageConfig packageConfig = new PackageConfig();
@@ -73,10 +80,10 @@ public class FreemarkerTemplateEngine {
             write(objectMap,"controller.ftl",controllerFile+table.getControllerName()+".java");
             logger.debug("----------------------------------成功生成表："+table.getName()+"的文件-----------------------------------------------");
         }
-        String oupFile = configBuilder.globalConfig().getOupFile();
-        CompressUtil.generateFile(oupFile,"zip");
-        CompressUtil.delAllFile(new File(oupFile+"\\CompressFile1"));
-        open(oupFile);
+        String CompressPath = "/CompressFile";
+        CompressUtil.generateFile(ospath,"zip",CompressPath);
+        CompressUtil.delAllFile(new File(ospath));
+        open(ospath);
     }
 
 
@@ -88,16 +95,55 @@ public class FreemarkerTemplateEngine {
         return objectMap;
     }
 
+    //获取系统类型
+    private static final String os = System.getProperty("os.name");
+    //linux文件目录
+    private static final String filePathlINUX = "/home/aa/bb/cc";
+    private static boolean flagWind = false;
     /**
      * 创建文件夹
      * @param path
      */
     public void existsFile(String path) {
+        //获取系统类型
+
         File file = new File(path);
-        if (!file.exists()){
-            file.mkdirs();
+
+        //linux平台，写入权限
+        if(flagWind){
+            file.setWritable(true, false);
         }
-//        logger.debug("创建出："+path);
+        if (!file.exists()){
+
+            file.mkdirs();
+
+        }
+        System.out.println("path = " + path);
+    }
+
+    public void existsNewFile(String path) {
+        File file = new File(path);
+
+
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        logger.debug("创建出："+path);
+    }
+
+
+    public String osLinuxOrWindows(String path){
+        if(!os.contains("Windows")){
+            flagWind=true;
+           return filePathlINUX;
+        }
+        flagWind=false;
+        return path;
     }
 
     /**

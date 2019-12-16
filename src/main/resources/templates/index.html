@@ -11,7 +11,7 @@
 
 <div >
     <form id="dataForm" action="/formData" method="post">
-        数据库地址：<input id="url" name="url"> ps:xxx.xxx.xxx.xxx:3306/test
+        数据库地址：<input id="url" name="url" placeholder="120.110.111.102:3306/test"> 比如输入:120.110.111.102:3306/test
         <br>账号：<input id="username" name="username">
         <br>密码：<input id="password" name="password">
         <input name="driverClass" hidden>
@@ -45,13 +45,12 @@
             data:data,
             dataType:'json',
             success:function(data){
-                alert(data[1])
-                var tableNameHtml='<form action="/tableFrom" method="get" id="tableForm">';
+                var tableNameHtml='请选择表名<br>'
+                    +'<form action="/tableFrom" method="get" id="tableForm">';
                 for(var i=0;i<data.length;i++){
                     tableNameHtml+='<input name="tablebox" type="checkbox" value='+data[i]+' />'+data[i]+'<br>';
                 }
-                tableNameHtml+=' 文件保存路径如：<input name="fileName">如：D:/<br>'
-                                +'包名:<input name="backName"> 如：cn.phlos<br>'
+                tableNameHtml+='包名:<input name="backName"> 如：cn.phlos<br>'
                                 +'<br><button  id="submitTable">生成</button>'
                                 +'</form>';
                 $("#showtable").html(tableNameHtml);

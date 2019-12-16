@@ -28,10 +28,10 @@ public class GenerateApi {
     }
 
     @GetMapping("/tableFrom")
-    public String tableFrom(String tablebox,String fileName,String backName) throws Exception {
-        System.out.println(tablebox+"    "+fileName+backName);
+    public String tableFrom(String tablebox,String backName) throws Exception {
+        System.out.println(tablebox+"    "+backName);
         GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setOupFile(fileName);//"D://test"
+        //globalConfig.setOupFile(fileName);//"D://test"
         globalConfig.setTableNameList(tablebox);
         PackageConfig packageConfig = new PackageConfig();
         packageConfig.setModuleName(backName);//"cn.phlos.ph_portiem_test"

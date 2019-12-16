@@ -6,7 +6,7 @@ import java.util.zip.ZipOutputStream;
 import java.io.*;
 
 /**
- * 生成压缩文件 （zip，rar 格式）
+ *
  */
 public class CompressUtil {
 
@@ -14,7 +14,7 @@ public class CompressUtil {
      * @param path   要压缩的文件路径
      * @param format 生成的格式（zip、rar）d
      */
-    public static void generateFile(String path, String format) throws Exception {
+    public static void generateFile(String path, String format,String compressPath) throws Exception {
 
         File file = new File(path);
         // 压缩文件的路径不存在
@@ -22,7 +22,7 @@ public class CompressUtil {
             throw new Exception("路径 " + path + " 不存在文件，无法进行压缩...");
         }
         // 用于存放压缩文件的文件夹
-        String generateFile = file.getParent() + File.separator +"CompressFile";
+        String generateFile = path +"/CompressFile";
         File compress = new File(generateFile);
         // 如果文件夹不存在，进行创建
         if( !compress.exists() ){
@@ -117,7 +117,7 @@ public class CompressUtil {
             // 空文件夹
             if (files.length == 0){
                 directory.delete();
-                System.out.println("删除" + directory.getAbsolutePath());
+               // System.out.println("删除" + directory.getAbsolutePath());
                 return;
             }
 
@@ -127,7 +127,7 @@ public class CompressUtil {
                     delAllFile(file);
                 } else {
                     file.delete();
-                    System.out.println("删除" + file.getAbsolutePath());
+                   // System.out.println("删除" + file.getAbsolutePath());
                 }
             }
 
@@ -136,6 +136,7 @@ public class CompressUtil {
             System.out.println("删除" + directory.getAbsolutePath());
         }
     }
+
 
 
 }

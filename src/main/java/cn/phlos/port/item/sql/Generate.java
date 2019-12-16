@@ -53,7 +53,7 @@ public class Generate {
         dataSourceConfig.setUsername("root");
         dataSourceConfig.setPassword("li15775063262");
         GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setOupFile("D://test");
+        globalConfig.setOupFile("D:/test/aa");
         PackageConfig packageConfig = new PackageConfig();
         packageConfig.setModuleName("cn.phlos.ph_portiem_test");
         ConfigBuilder configBuilder = new ConfigBuilder(dataSourceConfig,globalConfig,packageConfig);

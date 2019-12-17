@@ -78,7 +78,7 @@ public class FreemarkerTemplateEngine {
             String controllerFile = path+packageConfig.getController()+"/";
             existsFile(controllerFile);
             write(objectMap,"controller.ftl",controllerFile+table.getControllerName()+".java");
-            logger.debug("----------------------------------成功生成表："+table.getName()+"的文件-----------------------------------------------");
+            logger.debug("-----------------------------------成功生成表："+table.getName()+"的文件-----------------------------------------------");
         }
         String CompressPath = "/CompressFile";
         CompressUtil.generateFile(ospath,"zip",CompressPath);

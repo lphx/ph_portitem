@@ -7,7 +7,7 @@ import java.net.URL;
 public class HttpFileUtil {
 
     /**
-     * 提交file模拟form表单
+     * 提交file模拟form表单1
      * @param url
      * @param savefileName
      * @param fileName

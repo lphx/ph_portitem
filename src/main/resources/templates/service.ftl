@@ -1,17 +1,17 @@
 package ${package.parent}.${package.service};
 
-import ${package.parent}.${package.entity}.${table.convertName};
+import ${package.parent}.${package.entity}.${table.entityName};
 import java.util.List;
 
 public interface ${table.serviceName}{
 
-    List<${table.convertName}> page(Integer pageSize,Integer pageCount);
-    void update(${table.convertName} ${table.convertNameLower});
-    int save(${table.convertName} ${table.convertNameLower});
+    List<${table.entityName}> page(Integer pageSize,Integer pageCount);
+    void update(${table.entityName} ${table.convertNameLower});
+    int save(${table.entityName} ${table.convertNameLower});
     void remove(<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionType} ${field.transitionFieldLower}</#if></#list>);
     int count();
-    User findOne(<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionType} ${field.transitionFieldLower}</#if></#list>);
-    List<${table.convertName}> findAllList();
+    ${table.entityName} findOne(<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionType} ${field.transitionFieldLower}</#if></#list>);
+    List<${table.entityName}> findAllList();
 
 
 }

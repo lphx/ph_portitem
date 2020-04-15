@@ -39,9 +39,9 @@ public class TableInfo {
         this.entityName = convertName+"Entity";
         this.mapperName = convertName+"Mapper";
         this.serviceName = convertName+"Service";
-        this.serviceImplName = convertName+"ServiceIpml";
-        this.controllerName = convertName+"Controller";
-        this.convertNameLower = StrUilt.toOneLower(convertName);
+        this.serviceImplName = convertName+"ServiceImpl";
+        this.controllerName = convertName+"Api";
+        this.convertNameLower = StrUilt.toOneLower(this.entityName);
         this.mapperNameLower = StrUilt.toOneLower(this.mapperName);
         this.serviceNameLower = StrUilt.toOneLower(this.serviceName);
     }

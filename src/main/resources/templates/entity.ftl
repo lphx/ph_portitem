@@ -1,13 +1,13 @@
 package ${package.parent}.${package.entity};
-import java.io.Serializable;
+
 import lombok.Data;
 
-@TableName("${table.name}")
+
 @Data
-public class ${table.convertName} implements Serializable {
+public class ${table.entityName} {
 
 
-    private static final long serialVersionUID = 1L;
+
 
 <#-- 循环属性名称 -->
 <#list table.fields as field>

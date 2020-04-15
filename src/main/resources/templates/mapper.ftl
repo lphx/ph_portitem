@@ -1,11 +1,11 @@
 package ${package.parent}.${package.mapper};
 
-import ${package.parent}.${package.entity}.${table.convertName};
+import ${package.parent}.${package.entity}.${table.entityName};
 import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 /**
- * ${table.convertName} mapper接口
+ * ${table.convertName}Mapper接口
  */
 @Mapper
 public interface ${table.mapperName}{
@@ -13,39 +13,39 @@ public interface ${table.mapperName}{
     /**
       *获取所有数据
       */
-    @Select({"SELECT id, name,password,phone FROM ${table.name}"})
-    @Results(id = "select${table.convertName}",value={
+    @Select("SELECT <#list table.fields as field>${field.field}<#if field_index != table.fields?size-1>,</#if></#list> FROM ${table.name}")
+   <#-- @Results(id = "select${table.convertName}",value={
     <#list table.fields as field>
     @Result(id=true,column="${field.field}",property="${field.transitionField}",javaType=${field.transitionType}.class),
     </#list>
-    })
-    List<${table.convertName}> findAllList();
+    })-->
+    List<${table.entityName}> findAllList();
 
     /**
      * 查询一条数据
      */
     @Select("SELECT <#list table.fields as field>${field.field}<#if field_index != table.fields?size-1>,</#if></#list> FROM ${table.name} WHERE ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
-    @ResultMap(value = "select${table.convertName}")
-    User findOne(@Param("<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionField}") ${field.transitionType} ${field.transitionFieldLower}</#if></#list>);
+    @ResultMap(value = "select${table.entityName}")
+    ${table.entityName} findOne(@Param("<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionField}") ${field.transitionType} ${field.transitionFieldLower}</#if></#list>);
 
 
     /**
      * 添加数据
      */
     @Insert("INSERT INTO  ${table.name}( <#list table.fields as field>${field.field}<#if field_index != table.fields?size-1>,</#if></#list>) VALUES(<#list table.fields as field>${r"#{"}${field.transitionField}${r"}"}<#if field_index != table.fields?size-1>,</#if></#list>)")
-    int save(${table.convertName} ${table.convertNameLower});
+    int save(${table.entityName} ${table.convertNameLower});
 
     /**
      * 分页查询数据
      */
     @Select("SELECT * FROM  ${table.name} limit ${r"#{pageSize}"},${r"#{pageCount}"})")
-    List<User> page(Param("pageSize")Integer pageSize,Param("pageCount")Integer pageCount);
+    List<${table.entityName}> page(@Param("pageSize")Integer pageSize,@Param("pageCount")Integer pageCount);
 
     /**
      * 更新数据
      */
     @Update("UPDATE  <#list table.fields as field>${field.field}=${r"#{"}${field.transitionField}${r"}"}<#if field_index != table.fields?size-1>,</#if></#list> where ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
-    void update(${table.convertName} ${table.convertNameLower});
+    void update(${table.entityName} ${table.convertNameLower});
 
 
     /**

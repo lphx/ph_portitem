@@ -82,7 +82,7 @@ public class FreemarkerTemplateEngine {
         }
         String CompressPath = "/CompressFile";
         CompressUtil.generateFile(ospath,"zip",CompressPath);
-        CompressUtil.delAllFile(new File(ospath));
+        //CompressUtil.delAllFile(new File(ospath));
         open(ospath);
     }
 

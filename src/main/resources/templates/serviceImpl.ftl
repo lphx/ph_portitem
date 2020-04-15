@@ -1,11 +1,11 @@
 package ${package.parent}.${package.serviceImpl};
 
-import ${package.parent}.${package.entity}.${table.convertName};
+import ${package.parent}.${package.entity}.${table.entityName};
 import ${package.parent}.${package.mapper}.${table.mapperName};
 import ${package.parent}.${package.service}.${table.serviceName};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 
 @Service
 public class ${table.serviceImplName} implements ${table.serviceName} {
@@ -13,21 +13,21 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
     @Autowired
     private ${table.mapperName} ${table.mapperNameLower};
 
-    public  List<${table.convertName}> page(Integer pageSize,Integer pageCount) {
+    public  List<${table.entityName}> page(Integer pageSize,Integer pageCount) {
         return ${table.mapperNameLower}.page(pageSize,pageCount);
     }
 
-    public void update(${table.convertName} ${table.convertNameLower}) {
+    public void update(${table.entityName} ${table.convertNameLower}) {
         ${table.mapperNameLower}.update(${table.convertNameLower});
     }
 
-    public int save(${table.convertName} ${table.convertNameLower}) {
+    public int save(${table.entityName} ${table.convertNameLower}) {
         return ${table.mapperNameLower}.save(${table.convertNameLower});
     }
 
     <#list table.fields as field><#if field.field == table.primaryKey>
     public void remove(${field.transitionType} ${field.transitionFieldLower}) {
-        ${table.mapperNameLower}.remove(id);
+        ${table.mapperNameLower}.remove(${field.transitionFieldLower});
     }
     </#if></#list>
 
@@ -36,12 +36,12 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
     }
 
     <#list table.fields as field><#if field.field == table.primaryKey>
-    public User findOne(${field.transitionType} ${field.transitionFieldLower}) {
+    public ${table.entityName} findOne(${field.transitionType} ${field.transitionFieldLower}) {
         return ${table.mapperNameLower}.findOne(${field.transitionFieldLower});
     }
     </#if></#list>
 
-    public List<${table.convertName}> findAllList() {
+    public List<${table.entityName}> findAllList() {
         return ${table.mapperNameLower}.findAllList();
     }
 

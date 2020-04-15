@@ -15,18 +15,18 @@ public class ${table.controllerName} {
     private ${table.serviceName} ${table.serviceNameLower};
 
     @PostMapping("/page")
-    public  List<${table.convertName}> page(Integer pageSize,Integer pageCount) {
+    public  List<${table.entityName}> page(Integer pageSize,Integer pageCount) {
         return ${table.serviceNameLower}.page(pageSize,pageCount);
     }
 
     @PutMapping("/update")
-    public String update(${table.convertName} ${table.convertNameLower}) {
+    public String update(${table.entityName} ${table.convertNameLower}) {
         ${table.serviceNameLower}.update(${table.convertNameLower});
         return "success";
     }
 
     @PostMapping("save")
-    public int save(${table.convertName} ${table.convertNameLower}) {
+    public int save(${table.entityName} ${table.convertNameLower}) {
         int count = ${table.serviceNameLower}.save(${table.convertNameLower});
         return count;
     }
@@ -46,13 +46,13 @@ public class ${table.controllerName} {
 
     @GetMapping("findById")
     <#list table.fields as field><#if field.field == table.primaryKey>
-    public User findById(${field.transitionType} ${field.transitionFieldLower}) {
+    public ${table.entityName} findById(${field.transitionType} ${field.transitionFieldLower}) {
         return ${table.serviceNameLower}.findOne(${field.transitionFieldLower});
     }
     </#if></#list>
 
     @GetMapping("/findAll")
-    public List<${table.convertName}> findAll() {
+    public List<${table.entityName}> findAll() {
         return ${table.serviceNameLower}.findAllList();
     }
 

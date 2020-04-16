@@ -13,8 +13,8 @@ public interface ${table.mapperName}{
     /**
       *获取所有数据
       */
-    @Select("SELECT <#list table.fields as field>${field.field}<#if field_index != table.fields?size-1>,</#if></#list> FROM ${table.name}")
-   <#-- @Results(id = "select${table.convertName}",value={
+    @Select("SELECT <#list table.fields as field>${field.field} as ${field.transitionField}<#if field_index != table.fields?size-1>,</#if></#list> FROM `${table.name}`")
+    <#--@Results(id = "select${table.convertName}",value={
     <#list table.fields as field>
     @Result(id=true,column="${field.field}",property="${field.transitionField}",javaType=${field.transitionType}.class),
     </#list>
@@ -24,40 +24,41 @@ public interface ${table.mapperName}{
     /**
      * 查询一条数据
      */
-    @Select("SELECT <#list table.fields as field>${field.field}<#if field_index != table.fields?size-1>,</#if></#list> FROM ${table.name} WHERE ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
-    @ResultMap(value = "select${table.entityName}")
+    @Select("SELECT <#list table.fields as field>${field.field} as ${field.transitionField}<#if field_index != table.fields?size-1>,</#if></#list> FROM `${table.name}` WHERE ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
+    <#--@Results(id = "select${table.convertName}")-->
     ${table.entityName} findOne(@Param("<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionField}") ${field.transitionType} ${field.transitionFieldLower}</#if></#list>);
 
 
     /**
      * 添加数据
      */
-    @Insert("INSERT INTO  ${table.name}( <#list table.fields as field>${field.field}<#if field_index != table.fields?size-1>,</#if></#list>) VALUES(<#list table.fields as field>${r"#{"}${field.transitionField}${r"}"}<#if field_index != table.fields?size-1>,</#if></#list>)")
+    @Insert("INSERT INTO  `${table.name}` ( <#list table.fields as field>${field.field}<#if field_index != table.fields?size-1>,</#if></#list>) VALUES(<#list table.fields as field>${r"#{"}${field.transitionField}${r"}"}<#if field_index != table.fields?size-1>,</#if></#list>)")
     int save(${table.entityName} ${table.convertNameLower});
 
     /**
      * 分页查询数据
      */
-    @Select("SELECT * FROM  ${table.name} limit ${r"#{pageSize}"},${r"#{pageCount}"})")
+    @Select("SELECT <#list table.fields as field>${field.field} as ${field.transitionField}<#if field_index != table.fields?size-1>,</#if></#list> FROM  `${table.name}` limit ${r"#{pageSize}"},${r"#{pageCount}"})")
+  <#--  @Results(id = "select${table.convertName}")-->
     List<${table.entityName}> page(@Param("pageSize")Integer pageSize,@Param("pageCount")Integer pageCount);
 
     /**
      * 更新数据
      */
-    @Update("UPDATE  <#list table.fields as field>${field.field}=${r"#{"}${field.transitionField}${r"}"}<#if field_index != table.fields?size-1>,</#if></#list> where ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
+    @Update("UPDATE `${table.name}` set <#list table.fields as field>${field.field}=${r"#{"}${field.transitionField}${r"}"}<#if field_index != table.fields?size-1>,</#if></#list> where ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
     void update(${table.entityName} ${table.convertNameLower});
 
 
     /**
      * 删除数据
      */
-    @Delete("DELETE FROM  ${table.name} where ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
+    @Delete("DELETE FROM  `${table.name}` where ${table.primaryKey} = <#list table.fields as field><#if field.field == table.primaryKey>${r"#{"}${field.transitionField}${r"}"}</#if></#list>")
     void remove(@Param("<#list table.fields as field><#if field.field == table.primaryKey>${field.transitionField}") ${field.transitionType} ${field.transitionFieldLower}</#if></#list>);
 
     /**
      * 表的数据条数
      */
-    @Select("SELECT COUNT(*) FROM  ${table.name}")
+    @Select("SELECT COUNT(*) FROM  `${table.name}`")
     int count();
 
 
